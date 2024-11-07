@@ -6,7 +6,7 @@ INSERT INTO Usuarios SET nombre = 'Jose', email = 'jose@gmail.com', contraseña 
 
 --cliente +14
 INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) VALUES (
-    SELECT id FROM Usuarios WHERE email = "andrea@gmail.com",
+    (SELECT id FROM Usuarios WHERE email = "andrea@gmail.com"),
     "calle reina mercedes",
     "41010",
     "2005-10-18"
@@ -14,7 +14,7 @@ INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) 
 
 --cliente +14 -18
 INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) VALUES (
-    SELECT id FROM Usuarios WHERE email = "alejandro@gmail.com",
+    (SELECT id FROM Usuarios WHERE email = "alejandro@gmail.com"),
     "calle pueblo",
     "41250",
     "2008-12-22"
@@ -22,7 +22,7 @@ INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) 
 
 --cliente sin pedidos
 INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) VALUES (
-    SELECT id FROM Usuarios WHERE email = "david@gmail.com",
+    (SELECT id FROM Usuarios WHERE email = "david@gmail.com"),
     "calle sin pedidos",
     "20918",
     "2000-01-08"
@@ -30,7 +30,7 @@ INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) 
 
 --empleado
 INSERT INTO Empleados (usuarioId, salario) VALUES (
-    SELECT id FROM Usuarios WHERE email = "jose@gmail.com",
+    (SELECT id FROM Usuarios WHERE email = "jose@gmail.com"),
     2000.00
 );
 
@@ -42,31 +42,31 @@ INSERT INTO TiposProducto (nombre) VALUES ("Droguería");
 --productos
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Auriculares",
-    SELECT id FROM TiposProducto WHERE nombre = "Electrónica",
+    (SELECT id FROM TiposProducto WHERE nombre = "Electrónica"),
     25.00,
     TRUE
 );
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Vino tinto",
-    SELECT id FROM TiposProducto WHERE nombre = "Alimentos",
+    (SELECT id FROM TiposProducto WHERE nombre = "Alimentos"),
     15.00,
     FALSE
 );
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Chocolate",
-    SELECT id FROM TiposProducto WHERE nombre = "Alimentos",
+    (SELECT id FROM TiposProducto WHERE nombre = "Alimentos"),
     3.50,
     TRUE
 );
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Cargador USB",
-    SELECT id FROM TiposProducto WHERE nombre = "Electrónica",
+    (SELECT id FROM TiposProducto WHERE nombre = "Electrónica"),
     10.00,
     TRUE
 );
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Whisky",
-    SELECT id FROM TiposProducto WHERE nombre = "Alimentos",
+    (SELECT id FROM TiposProducto WHERE nombre = "Alimentos"),
     45.00,
     FALSE
 );
@@ -77,20 +77,20 @@ INSERT INTO Pedidos (fechaRealizacion, fechaEnvio, direccionEntrega, comentarios
     NULL,
     "Calle Ejemplo 45",
     "entrega urgente"
-    SELECT id FROM Clientes WHERE id = 1,
-    SELECT id FROM Clientes WHERE id = 4
+    (SELECT id FROM Clientes WHERE id = 1),
+    NULL
 );
 
 --lineas de pedido
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 1,
-    SELECT id FROM Productos WHERE id = 1,
+    (SELECT id FROM Pedidos WHERE id = 1),
+    (SELECT id FROM Productos WHERE id = 1),
     3,
     10.00
 );
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 1,
-    SELECT id FROM Productos WHERE id = 2,
+    (SELECT id FROM Pedidos WHERE id = 1),
+    (SELECT id FROM Productos WHERE id = 2),
     5,
     15.00
 );
@@ -100,16 +100,16 @@ INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
 
 --linea pedido - unidades
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 1,
-    SELECT id FROM Productos WHERE id = 3,
+    (SELECT id FROM Pedidos WHERE id = 1),
+    (SELECT id FROM Productos WHERE id = 3),
     150,
     20.00
 );
 
 --linea pedido - precio
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 1,
-    SELECT id FROM Productos WHERE id = 4,
+    (SELECT id FROM Pedidos WHERE id = 1),
+    (SELECT id FROM Productos WHERE id = 4),
     10,
     -16.00
 );
@@ -118,22 +118,22 @@ INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
 INSERT INTO Pedidos (fechaRealizacion, fechaEnvio, direccionEntrega, comentarios, clienteId, empleadoId) VALUES (
     "2024-10-31",
     NULL,
-    SELECT direccionEnvio FROM Clientes WHERE id = 2,
+    (SELECT direccionEnvio FROM Clientes WHERE id = 2),
     "entrega lo antes posible"
-    SELECT id FROM Clientes WHERE id = 2,
-    SELECT id FROM Clientes WHERE id = 4
+    (SELECT id FROM Clientes WHERE id = 2),
+    (SELECT id FROM Clientes WHERE id = 4)
 );
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 2,
-    SELECT id FROM Productos WHERE puedeVenderseAMenores=FALSE,
+    (SELECT id FROM Pedidos WHERE id = 2),
+    (SELECT id FROM Productos WHERE puedeVenderseAMenores=FALSE),
     5,
     10.00
 );
 
 --linea pedido - unique
 INSERT INTO LineasPedido (pedidoId, productoId, unidades, precio) VALUES (
-    SELECT id FROM Pedidos WHERE id = 1,
-    SELECT id FROM Productos WHERE id = 2,
+    (SELECT id FROM Pedidos WHERE id = 1),
+    (SELECT id FROM Productos WHERE id = 2),
     2,
     15.00
 );
@@ -144,16 +144,16 @@ INSERT INTO Usuarios SET nombre = 'Pepito', email = 'pepito@gmail.com', contrase
 --cliente -14
 INSERT INTO Usuarios SET nombre = 'Alvaro', email = 'alvaro@gmail.com', contraseña = '123456789';
 INSERT INTO Clientes (usuarioId, direccionEnvio, codigoPostal, fechaNacimiento) VALUES (
-    SELECT id FROM Usuarios WHERE email = "alvaro@gmail.com",
+    (SELECT id FROM Usuarios WHERE email = "alvaro@gmail.com"),
     "calle menor",
     "41250",
-    "20020-03-29"
+    "2020-03-29"
 );
 
 --producto - precio
 INSERT INTO Productos (nombre, tipoProductoId, precio, puedeVenderseAMenores) VALUES (
     "Autoestima",
-    SELECT id FROM TiposProducto WHERE nombre = "Droguería",
+    (SELECT id FROM TiposProducto WHERE nombre = "Alimento"),
     -17.00,
     TRUE
 );
